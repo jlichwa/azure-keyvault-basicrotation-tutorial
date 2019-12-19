@@ -2,22 +2,22 @@
   "$schema":"https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion":"1.0.0.0",
   "parameters":{  
-     "rgName":{  
-        "defaultValue":"[rotationsample]",
+     "ResourceNamePrefix":{  
+        "defaultValue":"[resourceGroup().name]",
         "type":"string",
         "metadata":{  
-           "description":"Specifies the name of the resource groups, which is used as prefix for resource names."
+           "description":"Prefix for resource names."
         }
      }
   },
   "variables":{  
-     "storageaccountid":"[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', parameters('rgName'),'strg')]"
+     "storageaccountid":"[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', parameters('ResourceNamePrefix'),'strg')]"
   },
   "resources":[  
      {  
         "type":"Microsoft.Sql/servers",
         "apiVersion":"2015-05-01-preview",
-        "name":"[concat(parameters('rgName'),'-sql')]",
+        "name":"[concat(parameters('ResourceNamePrefix'),'-sql')]",
         "location":"[resourceGroup().location]",
         "kind":"v12.0",
         "properties":{  
@@ -29,9 +29,9 @@
      {  
         "type":"Microsoft.Sql/servers/firewallRules",
         "apiVersion":"2015-05-01-preview",
-        "name":"[concat(parameters('rgName'),'-sql', '/AllowAllWindowsAzureIps')]",
+        "name":"[concat(parameters('ResourceNamePrefix'),'-sql', '/AllowAllWindowsAzureIps')]",
         "dependsOn":[  
-           "[resourceId('Microsoft.Sql/servers', concat(parameters('rgName'),'-sql'))]"
+           "[resourceId('Microsoft.Sql/servers', concat(parameters('ResourceNamePrefix'),'-sql'))]"
         ],
         "properties":{  
            "startIpAddress":"0.0.0.0",
@@ -41,11 +41,11 @@
      {  
         "type":"Microsoft.KeyVault/vaults",
         "apiVersion":"2018-02-14",
-        "name":"[concat(parameters('rgName'),'-kv')]",
+        "name":"[concat(parameters('ResourceNamePrefix'),'-kv')]",
         "location":"[resourceGroup().location]",
         "dependsOn":[  
-           "[resourceId('Microsoft.Web/sites', concat(parameters('rgName'),'-app'))]",
-           "[resourceId('Microsoft.Web/sites', concat(parameters('rgName'),'-fn'))]"
+           "[resourceId('Microsoft.Web/sites', concat(parameters('ResourceNamePrefix'),'-app'))]",
+           "[resourceId('Microsoft.Web/sites', concat(parameters('ResourceNamePrefix'),'-fn'))]"
         ],
         "properties":{  
            "sku":{  
@@ -56,7 +56,7 @@
            "accessPolicies":[  
               {  
                  "tenantId":"[subscription().tenantId]",
-                 "objectId":"[reference(concat(resourceId('Microsoft.Web/sites', concat(parameters('rgName'),'-app')),'/providers/Microsoft.ManagedIdentity/Identities/default'),'2015-08-31-PREVIEW').principalId]",
+                 "objectId":"[reference(concat(resourceId('Microsoft.Web/sites', concat(parameters('ResourceNamePrefix'),'-app')),'/providers/Microsoft.ManagedIdentity/Identities/default'),'2015-08-31-PREVIEW').principalId]",
                  "permissions":{  
                     "keys":[  
 
@@ -72,7 +72,7 @@
               },
               {  
                  "tenantId":"[subscription().tenantId]",
-                 "objectId":"[reference(concat(resourceId('Microsoft.Web/sites', concat(parameters('rgName'),'-fn')),'/providers/Microsoft.ManagedIdentity/Identities/default'),'2015-08-31-PREVIEW').principalId]",
+                 "objectId":"[reference(concat(resourceId('Microsoft.Web/sites', concat(parameters('ResourceNamePrefix'),'-fn')),'/providers/Microsoft.ManagedIdentity/Identities/default'),'2015-08-31-PREVIEW').principalId]",
                  "permissions":{  
                     "keys":[  
 
@@ -96,10 +96,10 @@
      {  
         "type":"Microsoft.KeyVault/vaults/secrets",
         "apiVersion":"2016-10-01",
-        "name":"[concat(parameters('rgName'),'-kv', '/sqluser')]",
+        "name":"[concat(parameters('ResourceNamePrefix'),'-kv', '/sqluser')]",
         "location":"[resourceGroup().location]",
         "dependsOn":[  
-           "[resourceId('Microsoft.KeyVault/vaults', concat(parameters('rgName'),'-kv')]"
+           "[resourceId('Microsoft.KeyVault/vaults', concat(parameters('ResourceNamePrefix'),'-kv')]"
         ],
         "tags":{  
 

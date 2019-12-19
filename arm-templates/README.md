@@ -23,7 +23,6 @@ This template creates below components to help demonstrate basic secret rotation
 - Storage Account 
 - Web App 
 
-### Deployment:
 <p>
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjlichwa%2Fazure-keyvault-basicrotation-tutorial%2Fmaster%2Farm-templates%2Fall%2Fazuredeploy.json" target="_blank">

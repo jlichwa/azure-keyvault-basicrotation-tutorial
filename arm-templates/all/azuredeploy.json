@@ -2,22 +2,22 @@
   "$schema":"https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion":"1.0.0.0",
   "parameters":{  
-     "rgName":{  
-        "defaultValue":"[rotationsample]",
+     "ResourceNamePrefix":{  
+        "defaultValue":"[resourceGroup().name]",
         "type":"string",
         "metadata":{  
-           "description":"Specifies the name of the resource groups, which is used as prefix for resource names."
+           "description":"Prefix for resource names."
         }
      }
   },
   "variables":{  
-     "storageaccountid":"[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', parameters('rgName'),'strg')]"
+     "storageaccountid":"[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', parameters('ResourceNamePrefix'),'strg')]"
   },
   "resources":[  
      {  
         "type":"Microsoft.Sql/servers",
         "apiVersion":"2015-05-01-preview",
-        "name":"[concat(parameters('rgName'),'-sql')]",
+        "name":"[concat(parameters('ResourceNamePrefix'),'-sql')]",
         "location":"[resourceGroup().location]",
         "kind":"v12.0",
         "properties":{  
@@ -29,9 +29,9 @@
      {  
         "type":"Microsoft.Sql/servers/firewallRules",
         "apiVersion":"2015-05-01-preview",
-        "name":"[concat(parameters('rgName'),'-sql', '/AllowAllWindowsAzureIps')]",
+        "name":"[concat(parameters('ResourceNamePrefix'),'-sql', '/AllowAllWindowsAzureIps')]",
         "dependsOn":[  
-           "[resourceId('Microsoft.Sql/servers', concat(parameters('rgName'),'-sql'))]"
+           "[resourceId('Microsoft.Sql/servers', concat(parameters('ResourceNamePrefix'),'-sql'))]"
         ],
         "properties":{  
            "startIpAddress":"0.0.0.0",
@@ -41,7 +41,7 @@
      {  
         "type":"Microsoft.Storage/storageAccounts",
         "apiVersion":"2019-04-01",
-        "name":"[concat(parameters('rgName'),'strg')]",
+        "name":"[concat(parameters('ResourceNamePrefix'),'strg')]",
         "location":"[resourceGroup().location]",
         "sku":{  
            "name":"Standard_LRS",
@@ -76,7 +76,7 @@
      {  
         "type":"Microsoft.Web/serverfarms",
         "apiVersion":"2018-02-01",
-        "name":"[concat(parameters('rgName'),'-plan')]",
+        "name":"[concat(parameters('ResourceNamePrefix'),'-plan')]",
         "location":"[resourceGroup().location]",
         "sku":{  
            "name":"S1",
@@ -100,10 +100,10 @@
      {  
         "type":"Microsoft.Web/sites",
         "apiVersion":"2018-11-01",
-        "name":"[concat(parameters('rgName'),'-app')]",
+        "name":"[concat(parameters('ResourceNamePrefix'),'-app')]",
         "location":"[resourceGroup().location]",
         "dependsOn":[  
-           "[resourceId('Microsoft.Web/serverfarms', concat(parameters('rgName'),'-plan'))]"
+           "[resourceId('Microsoft.Web/serverfarms', concat(parameters('ResourceNamePrefix'),'-plan'))]"
         ],
         "kind":"app",
         "identity":{  
@@ -113,17 +113,17 @@
            "enabled":true,
            "hostNameSslStates":[  
               {  
-                 "name":"[concat(parameters('rgName'),'-app', '.azurewebsites.net')]",
+                 "name":"[concat(parameters('ResourceNamePrefix'),'-app', '.azurewebsites.net')]",
                  "sslState":"Disabled",
                  "hostType":"Standard"
               },
               {  
-                 "name":"[concat(parameters('rgName'),'-app', '.scm.azurewebsites.net')]",
+                 "name":"[concat(parameters('ResourceNamePrefix'),'-app', '.scm.azurewebsites.net')]",
                  "sslState":"Disabled",
                  "hostType":"Repository"
               }
            ],
-           "serverFarmId":"[resourceId('Microsoft.Web/serverfarms', concat(parameters('rgName'),'-plan'))]",
+           "serverFarmId":"[resourceId('Microsoft.Web/serverfarms', concat(parameters('ResourceNamePrefix'),'-plan'))]",
            "reserved":false,
            "isXenon":false,
            "hyperV":false,
@@ -139,11 +139,11 @@
               "appSettings":[  
                  {  
                     "name":"DataSource",
-                    "value":"[concat(parameters('rgName'),'-sql','.database.windows.net')]"
+                    "value":"[concat(parameters('ResourceNamePrefix'),'-sql','.database.windows.net')]"
                  },
                  {  
                     "name":"KeyVaultName",
-                    "value":"[concat(parameters('rgName'),'-kv')]"
+                    "value":"[concat(parameters('ResourceNamePrefix'),'-kv')]"
                  }
               ]
            }
@@ -152,10 +152,10 @@
      {  
         "type":"Microsoft.Web/sites",
         "apiVersion":"2018-11-01",
-        "name":"[concat(parameters('rgName'),'-fn')]",
+        "name":"[concat(parameters('ResourceNamePrefix'),'-fn')]",
         "location":"[resourceGroup().location]",
         "dependsOn":[  
-           "[resourceId('Microsoft.Web/serverfarms', concat(parameters('rgName'),'-plan'))]"
+           "[resourceId('Microsoft.Web/serverfarms', concat(parameters('ResourceNamePrefix'),'-plan'))]"
         ],
         "kind":"functionapp",
         "identity":{  
@@ -165,17 +165,17 @@
            "enabled":true,
            "hostNameSslStates":[  
               {  
-                 "name":"[concat(parameters('rgName'),'-fn', '.azurewebsites.net')]",
+                 "name":"[concat(parameters('ResourceNamePrefix'),'-fn', '.azurewebsites.net')]",
                  "sslState":"Disabled",
                  "hostType":"Standard"
               },
               {  
-                 "name":"[concat(parameters('rgName'),'-fn', '.scm.azurewebsites.net')]",
+                 "name":"[concat(parameters('ResourceNamePrefix'),'-fn', '.scm.azurewebsites.net')]",
                  "sslState":"Disabled",
                  "hostType":"Repository"
               }
            ],
-           "serverFarmId":"[resourceId('Microsoft.Web/serverfarms', concat(parameters('rgName'),'-plan'))]",
+           "serverFarmId":"[resourceId('Microsoft.Web/serverfarms', concat(parameters('ResourceNamePrefix'),'-plan'))]",
            "reserved":false,
            "isXenon":false,
            "hyperV":false,
@@ -191,7 +191,7 @@
               "appSettings":[  
                  {  
                     "name":"AzureWebJobsStorage",
-                    "value":"[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('rgName'),'strg', ';AccountKey=', listKeys(variables('storageaccountid'),'2015-05-01-preview').key1)]"
+                    "value":"[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('ResourceNamePrefix'),'strg', ';AccountKey=', listKeys(variables('storageaccountid'),'2015-05-01-preview').key1)]"
                  },
                  {  
                     "name":"FUNCTIONS_EXTENSION_VERSION",
@@ -208,10 +208,10 @@
      {  
         "type":"Microsoft.Web/sites/config",
         "apiVersion":"2018-11-01",
-        "name":"[concat(parameters('rgName'),'-fn', '/web')]",
+        "name":"[concat(parameters('ResourceNamePrefix'),'-fn', '/web')]",
         "location":"[resourceGroup().location]",
         "dependsOn":[  
-           "[resourceId('Microsoft.Web/sites', concat(parameters('rgName'),'-fn'))]"
+           "[resourceId('Microsoft.Web/sites', concat(parameters('ResourceNamePrefix'),'-fn'))]"
         ],
         "properties":{  
            "numberOfWorkers":1,
@@ -332,11 +332,11 @@
      {  
         "type":"Microsoft.KeyVault/vaults",
         "apiVersion":"2018-02-14",
-        "name":"[concat(parameters('rgName'),'-kv')]",
+        "name":"[concat(parameters('ResourceNamePrefix'),'-kv')]",
         "location":"[resourceGroup().location]",
         "dependsOn":[  
-           "[resourceId('Microsoft.Web/sites', concat(parameters('rgName'),'-app'))]",
-           "[resourceId('Microsoft.Web/sites', concat(parameters('rgName'),'-fn'))]"
+           "[resourceId('Microsoft.Web/sites', concat(parameters('ResourceNamePrefix'),'-app'))]",
+           "[resourceId('Microsoft.Web/sites', concat(parameters('ResourceNamePrefix'),'-fn'))]"
         ],
         "properties":{  
            "sku":{  
@@ -347,7 +347,7 @@
            "accessPolicies":[  
               {  
                  "tenantId":"[subscription().tenantId]",
-                 "objectId":"[reference(concat(resourceId('Microsoft.Web/sites', concat(parameters('rgName'),'-app')),'/providers/Microsoft.ManagedIdentity/Identities/default'),'2015-08-31-PREVIEW').principalId]",
+                 "objectId":"[reference(concat(resourceId('Microsoft.Web/sites', concat(parameters('ResourceNamePrefix'),'-app')),'/providers/Microsoft.ManagedIdentity/Identities/default'),'2015-08-31-PREVIEW').principalId]",
                  "permissions":{  
                     "keys":[  
 
@@ -363,7 +363,7 @@
               },
               {  
                  "tenantId":"[subscription().tenantId]",
-                 "objectId":"[reference(concat(resourceId('Microsoft.Web/sites', concat(parameters('rgName'),'-fn')),'/providers/Microsoft.ManagedIdentity/Identities/default'),'2015-08-31-PREVIEW').principalId]",
+                 "objectId":"[reference(concat(resourceId('Microsoft.Web/sites', concat(parameters('ResourceNamePrefix'),'-fn')),'/providers/Microsoft.ManagedIdentity/Identities/default'),'2015-08-31-PREVIEW').principalId]",
                  "permissions":{  
                     "keys":[  
 
@@ -387,10 +387,10 @@
      {  
         "type":"Microsoft.KeyVault/vaults/secrets",
         "apiVersion":"2016-10-01",
-        "name":"[concat(parameters('rgName'),'-kv', '/sqluser')]",
+        "name":"[concat(parameters('ResourceNamePrefix'),'-kv', '/sqluser')]",
         "location":"[resourceGroup().location]",
         "dependsOn":[  
-           "[resourceId('Microsoft.KeyVault/vaults', concat(parameters('rgName'),'-kv')]"
+           "[resourceId('Microsoft.KeyVault/vaults', concat(parameters('ResourceNamePrefix'),'-kv')]"
         ],
         "tags":{  
 
