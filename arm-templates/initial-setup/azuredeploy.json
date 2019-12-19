@@ -44,8 +44,7 @@
         "name":"[concat(parameters('ResourceNamePrefix'),'-kv')]",
         "location":"[resourceGroup().location]",
         "dependsOn":[  
-           "[resourceId('Microsoft.Web/sites', concat(parameters('ResourceNamePrefix'),'-app'))]",
-           "[resourceId('Microsoft.Web/sites', concat(parameters('ResourceNamePrefix'),'-fn'))]"
+
         ],
         "properties":{  
            "sku":{  
