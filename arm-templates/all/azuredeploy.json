@@ -390,7 +390,7 @@
         "name":"[concat(parameters('ResourceNamePrefix'),'-kv', '/sqluser')]",
         "location":"[resourceGroup().location]",
         "dependsOn":[  
-           "[resourceId('Microsoft.KeyVault/vaults', concat(parameters('ResourceNamePrefix'),'-kv')]"
+           "[resourceId('Microsoft.KeyVault/vaults', concat(parameters('ResourceNamePrefix'),'-kv'))]"
         ],
         "tags":{  
 
