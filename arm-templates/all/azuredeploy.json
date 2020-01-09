@@ -383,21 +383,6 @@
            "enabledForDiskEncryption":false,
            "enabledForTemplateDeployment":false
         }
-     },
-     {  
-        "type":"Microsoft.KeyVault/vaults/secrets",
-        "apiVersion":"2016-10-01",
-        "name":"[concat(parameters('ResourceNamePrefix'),'-kv', '/sqluser')]",
-        "location":"[resourceGroup().location]",
-        "dependsOn":[  
-           "[resourceId('Microsoft.KeyVault/vaults', concat(parameters('ResourceNamePrefix'),'-kv'))]"
-        ],
-        "tags":{  
-
-        },
-        "properties":{  
-           "value":"Simple123"
-        }
      }
   ]
 }
