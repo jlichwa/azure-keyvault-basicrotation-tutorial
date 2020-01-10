@@ -13,7 +13,31 @@
   "variables":{  
      "storageaccountid":"[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', parameters('ResourceNamePrefix'),'strg')]"
   },
-  "resources":[  
+  "resources":[
+      {  
+         "type":"Microsoft.Web/serverfarms",
+         "apiVersion":"2018-02-01",
+         "name":"[concat(parameters('ResourceNamePrefix'),'-plan')]",
+         "location":"[resourceGroup().location]",
+         "sku":{  
+            "name":"S1",
+            "tier":"Standard",
+            "size":"S1",
+            "family":"S",
+            "capacity":1
+         },
+         "kind":"app",
+         "properties":{  
+            "perSiteScaling":false,
+            "maximumElasticWorkerCount":1,
+            "isSpot":false,
+            "reserved":false,
+            "isXenon":false,
+            "hyperV":false,
+            "targetWorkerCount":0,
+            "targetWorkerSizeId":0
+         }
+      },  
      {  
         "type":"Microsoft.Web/sites",
         "apiVersion":"2018-11-01",
