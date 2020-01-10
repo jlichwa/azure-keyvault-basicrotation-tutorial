@@ -29,7 +29,7 @@ This template creates below components to help demonstrate basic secret rotation
     <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.png"/>
 </a>
 
-### Function App:
+### Web App:
 
 - Web App
 - Key Vault Access Policy
