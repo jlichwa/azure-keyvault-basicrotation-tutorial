@@ -19,7 +19,7 @@ az functionapp identity assign -g akv-build-demo -n akvbuilddemo-fn
 az keyvault set-policy -n akv-build-demo-kv --object-id "239c8b4a-3bdb-4186-aa72-ccc5c5ad19be" --secret-permissions get list set
 
 #Install Function App
-
+ddd
 
 #Add Event Subscription
 

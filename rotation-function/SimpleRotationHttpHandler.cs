@@ -1,17 +1,8 @@
-
-using System;
-using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 
-using Azure.Security.KeyVault.Secrets;
-using Azure.Identity;
-using Microsoft.Data.SqlClient;
-using Microsoft.Azure.EventGrid.Models;
-using Microsoft.Azure.WebJobs.Extensions.EventGrid;
-using System.Text.RegularExpressions;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using SimpleRotationFunc;

@@ -87,7 +87,7 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
-
+*.azcli
 # Chutzpah Test files
 _Chutzpah*
 
@@ -338,4 +338,4 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
-Build2020.azcli
+
