@@ -1,0 +1,35 @@
+#List Existing Components
+az resource list --resource-group akv-build-demo -o table
+
+#Test Database
+#Initial connection string: Server=tcp:akv-build-demo-sql.database.windows.net,1433;Database=master;User ID=azureuser;Password=buildemo123!;Encrypt=true;Connection Timeout=30;
+
+#Create Function App
+az storage account create --name akvbuilddemostorage --location eastus --resource-group akv-build-demo --sku Standard_LRS
+
+az functionapp create --resource-group akv-build-demo --consumption-plan-location eastus --runtime dotnet --functions-version 3 --name akvbuilddemo-fn --storage-account akvbuilddemostorage
+
+#List Existing Components
+az resource list --resource-group akv-build-demo -o table
+
+#Assign managed identity to Function App
+az functionapp identity assign -g akv-build-demo -n akvbuilddemo-fn
+
+#Add permissions for Function App to Key Vault
+az keyvault set-policy -n akv-build-demo-kv --object-id "239c8b4a-3bdb-4186-aa72-ccc5c5ad19be" --secret-permissions get list set
+
+#Download Function App
+#Install Function App
+
+
+#Add Event Subscription
+
+#Add Secret (SQL Password) to Key Vault
+
+#Check Secret
+
+#Read Secret
+az keyvault secret show --name "ExamplePassword" --vault-name "Contoso-Vault2"
+
+#Test SQL Connection
+#Initial connection string: Server=tcp:akv-build-demo-sql.database.windows.net,1433;Database=master;User ID=azureuser;Password=buildemo123!;Encrypt=true;Connection Timeout=30;
