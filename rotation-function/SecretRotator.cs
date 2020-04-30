@@ -36,7 +36,7 @@ namespace SimpleRotationFunc
             var randomPassword = CreateRandomPassword();
             log.LogInformation("New Password Generated");
 
-            //Check service connection
+            //Check SQL connection
             CheckServiceConnection(secret);
             log.LogInformation("Service Connection Validated");
 
@@ -47,7 +47,7 @@ namespace SimpleRotationFunc
             //Update SQL Server with new password
             UpdateServicePassword(secret, randomPassword);
             log.LogInformation("Password Changed");
-            log.LogInformation($"Secret Rotated Succesffuly");
+            log.LogInformation($"Secret Rotated Successfully");
         }
 
         private static void CreateNewSecretVersion(SecretClient client, KeyVaultSecret secret, string newSecretValue)

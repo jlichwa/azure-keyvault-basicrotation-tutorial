@@ -30,8 +30,8 @@ namespace SimpleRotationSample_fn
 
         [FunctionName("SimpleRotationHttpTest")]
         public static async Task<IActionResult> Run(
-           [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-           ILogger log)
+			[HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+			ILogger log)
         {
             log.LogInformation(req.ToString());
 
