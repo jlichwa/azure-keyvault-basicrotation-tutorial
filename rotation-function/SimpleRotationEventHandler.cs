@@ -26,6 +26,7 @@ namespace SimpleRotationFunc
             log.LogInformation($"Secret Name: {secretName}");
             log.LogInformation($"Secret Version: {secretVersion}");
 
+
             SecretRotator.RotateSecret(log, secretName, secretVersion, keyVaultName);
 
         }
