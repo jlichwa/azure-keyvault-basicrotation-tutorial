@@ -12,7 +12,7 @@ using System.Text.RegularExpressions;
 namespace SimpleRotationFunc
 {
     
-    public class SeretRotator
+    public class SecretRotator
     {
         private const string UserIdTagName = "UserID";
         private const string DataSourceTagName = "DataSource";
@@ -32,17 +32,19 @@ namespace SimpleRotationFunc
             log.LogInformation($"Data Source Name: {datasource}");
             log.LogInformation($"User Id Name: {userId}");
 
-            //create new password
+            //Create new password
             var randomPassword = CreateRandomPassword();
             log.LogInformation("New Password Generated");
 
-            //check service connection
+            //Check service connection
             CheckServiceConnection(secret);
             log.LogInformation("Service Connection Validated");
 
+            //Add secret with password to Key Vault
             CreateNewSecretVersion(client, secret, randomPassword);
             log.LogInformation("New Secret Version Generated");
 
+            //Update SQL Server with new password
             UpdateServicePassword(secret, randomPassword);
             log.LogInformation("Password Changed");
             log.LogInformation($"Secret Rotated Succesffuly");

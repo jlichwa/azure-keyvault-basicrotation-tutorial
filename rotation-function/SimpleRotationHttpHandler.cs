@@ -36,9 +36,9 @@ namespace SimpleRotationSample_fn
             log.LogInformation(req.ToString());
 
             log.LogInformation("C# Http trigger function processed a request.");
-            SeretRotator.RotateSecret(log,SecretName, SecretVersion,KeyVaultName);
+            SecretRotator.RotateSecret(log,SecretName, SecretVersion,KeyVaultName);
 
-            return new OkObjectResult($"Secret Rotated Succesffuly");
+            return new OkObjectResult($"Secret Rotated Successfully");
         }
 
        
