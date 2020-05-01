@@ -20,7 +20,7 @@ namespace SimpleRotationSample_fn
         private static string SecretVersion = "";
 
         [FunctionName("SimpleRotationHttpTest")]
-        public static async Task<IActionResult> Run(
+        public static IActionResult Run(
 			[HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
 			ILogger log)
         {
