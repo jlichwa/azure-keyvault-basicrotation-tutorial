@@ -32,15 +32,15 @@ namespace SimpleRotationFunc
             log.LogInformation($"Data Source Name: {datasource}");
             log.LogInformation($"User Id Name: {userId}");
 
+            //Check SQL connection
+            CheckServiceConnection(secret);
+            log.LogInformation("Service  Connection Validated");
+            
             //Create new password
             var randomPassword = CreateRandomPassword();
             log.LogInformation("New Password Generated");
 
-            //Check SQL connection
-            CheckServiceConnection(secret);
-            log.LogInformation("Service Connection Validated");
-
-            //Add secret with password to Key Vault
+            //Add secret version with new password to Key Vault
             CreateNewSecretVersion(client, secret, randomPassword);
             log.LogInformation("New Secret Version Generated");
 
