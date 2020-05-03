@@ -63,22 +63,6 @@ namespace SimpleRotationFunc
             client.SetSecret(newSecret);
         }
 
-        private static void CheckServiceConnection(KeyVaultSecret secret)
-        {
-            var userId = secret.Properties.Tags.ContainsKey(UserIdTagName) ? secret.Properties.Tags[UserIdTagName] : "";
-            var datasource = secret.Properties.Tags.ContainsKey(DataSourceTagName) ? secret.Properties.Tags[DataSourceTagName] : "";
-
-            var password = secret.Value;
-            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-            builder.DataSource = datasource;
-            builder.UserID = userId;
-            builder.Password = password;
-            using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
-            {
-                connection.Open();
-            }
-        }
-
         private static void UpdateServicePassword(KeyVaultSecret secret, string newpassword)
         {
             var userId = secret.Properties.Tags.ContainsKey(UserIdTagName) ? secret.Properties.Tags[UserIdTagName] : "";
@@ -117,6 +101,21 @@ namespace SimpleRotationFunc
             }
 
             return new String((char[])chars);
+        }
+         private static void CheckServiceConnection(KeyVaultSecret secret)
+        {
+            var userId = secret.Properties.Tags.ContainsKey(UserIdTagName) ? secret.Properties.Tags[UserIdTagName] : "";
+            var datasource = secret.Properties.Tags.ContainsKey(DataSourceTagName) ? secret.Properties.Tags[DataSourceTagName] : "";
+
+            var password = secret.Value;
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+            builder.DataSource = datasource;
+            builder.UserID = userId;
+            builder.Password = password;
+            using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
+            {
+                connection.Open();
+            }
         }
     }
 }
